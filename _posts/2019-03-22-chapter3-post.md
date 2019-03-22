@@ -26,13 +26,13 @@ featured: true
 ### init 프로세스의 실행 과정
 
 먼저 커널소스를 받기위해 깃을 사용했다.  
-*sudo apt-get install git*  
-*git clone https://android.googlesource.com/kernel/common.git kernel*  
-*cd kernel*  
-*git branch -r*  
+> *sudo apt-get install git*  
+> *git clone https://android.googlesource.com/kernel/common.git kernel*  
+> *cd kernel*  
+> *git branch -r*  
 
 위의 명령어로 브랜치 정보를 확인해서, 나는 3.18버전을 체크아웃 받았다.  
-*git checkout origin/android-3.18*  
+> *git checkout origin/android-3.18*  
 
 #### init_post()함수  
 
@@ -47,5 +47,6 @@ featured: true
 
 ### init 프로세스의 소스 코드 분석
 
-프로세스들이 서로 메시지를 교환하기 위한 시그널 핸들러를 등록하고, 부팅에 필요한 디렉터리를 생성, 마운트한다.  
+프로세스들이 서로 메시지를 교환하기 위한 시그널 핸들러를 등록하고, 부팅에 필요한 디렉터리를 생성, 마운트한다.
 이 부분부터 코드가 보이지 않는다...
+init.rc을 파싱하고 에뮬레이터 환경을 위해 QEMU 초기화를 한다. 부트 관련 서비스 초기화 후 부팅 로고를 출력한다.
