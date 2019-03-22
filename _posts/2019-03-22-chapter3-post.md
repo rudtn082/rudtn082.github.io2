@@ -26,13 +26,17 @@ featured: true
 ### init 프로세스의 실행 과정
 
 먼저 커널소스를 받기위해 깃을 사용했다.  
-> *sudo apt-get install git*  
-> *git clone https://android.googlesource.com/kernel/common.git kernel*  
-> *cd kernel*  
-> *git branch -r*  
+```
+*sudo apt-get install git*  
+*git clone https://android.googlesource.com/kernel/common.git kernel*  
+*cd kernel*  
+*git branch -r*  
+```
 
-위의 명령어로 브랜치 정보를 확인해서, 나는 3.18버전을 체크아웃 받았다.  
-> *git checkout origin/android-3.18*  
+위의 명령어로 브랜치 정보를 확인해서, 나는 3.18버전을 체크아웃 받았다.
+```
+*git checkout origin/android-3.18*  
+```
 
 #### init_post()함수  
 
