@@ -53,16 +53,16 @@ featured: true
 
 ![Alt text](/images/post/error2.PNG "에러2")
 
-이후로도 빌드 오류가 일어났는데, 발생한 오류 -> 해결방법 순이다.
+**이후로도 빌드 오류가 일어났는데, 발생한 오류 -> 해결방법 순이다.**
 
 ![Alt text](/images/post/error3.PNG "에러3")
 
-*frameworks/base/tools/aapt/Android.mk 파일의 31번째 줄에 -fpermissive 추가*  
+frameworks/base/tools/aapt/Android.mk 파일의 31번째 줄에 -fpermissive 추가  
 *LOCAL_CFLAGS += -Wno-format-y2k -fpermissive*
 
 ![Alt text](/images/post/error4.PNG "에러4")
 
-*frameworks/base/libs/utils/Android.mk 파일의 64번째 줄에 -fpermissive 추가*  
+frameworks/base/libs/utils/Android.mk 파일의 64번째 줄에 -fpermissive 추가  
 *LOCAL_CFLAGS += -DLIBUTILS_NATIVE=1 $(TOOL_CFLAGS) -fpermissive*
 
 **-fpermissive 옵션은 부적합한 코드를 컴파일할 수 있도록 해주는 옵션이다.**
@@ -96,4 +96,4 @@ featured: true
 
 
 * SDK 개발 환경 구축
-책에서는 이클립스를 설치했지만, 나는 안드로이드 스튜디오를 설치했는데... '.classpath'파일이 없다.
+책에서는 이클립스를 설치했지만, 나는 안드로이드 스튜디오를 설치했는데... '.classpath'파일이 없다... 디버깅은 실패
