@@ -30,6 +30,7 @@ featured: true
 *git clone https://android.googlesource.com/kernel/common.git kernel*  
 *cd kernel*  
 *git branch -r*  
+
 위의 명령어로 브랜치 정보를 확인해서, 나는 3.18버전을 체크아웃 받았다.  
 *git checkout origin/android-3.18*  
 
