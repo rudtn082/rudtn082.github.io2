@@ -84,12 +84,12 @@ rm -f 4d7ae7b79eda47e489669fbbe1f91ec501d42fb2.diff
 sudo apt-get install gcc-4.4  
 sudo apt-get install g++-4.4  
 
-Sudo rm -f /usr/bin/gcc  
-Sudo rm -f /usr/bin/g++  
-Sudo ln -s /usr/bin/gcc-4.4 /usr/bin/gcc  
-Sudo ln -s /usr/bin/g++-4.4 /usr/bin/g++  
-    
-sudo apt-get install g ++ - 4.4-multilib  
+sudo rm -f /usr/bin/gcc  
+sudo rm -f /usr/bin/g++  
+sudo ln -s /usr/bin/gcc-4.4 /usr/bin/gcc  
+sudo ln -s /usr/bin/g++-4.4 /usr/bin/g++  
+
+sudo apt-get install g++-4.4-multilib  
 ```
 
 ![Alt text](/images/post/error7.PNG "에러7")
