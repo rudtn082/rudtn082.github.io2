@@ -43,7 +43,7 @@ git checkout origin/android-3.18
 책에서는 init_post()함수에 대해서 설명했는데, 내가 3.18버전을 받아서 그런지 비슷한 코드의 함수명이 달랐다.  
 3.18에서는 __ref형을 반환하는 kernel_init() 함수.  
 
-![Alt text](/images/post/ch3.PNG "ch3")
+![Alt text](/images/post/ch3.PNG "ch3")                                                
 
 책과 다른 점이 있었는데, run_init_process의 리턴값을 받아서 false일 경우에 바로 종료시키는 구문이 추가되었다.  
 또한 /sbin, /etc, /bin 디렉터리에서 init파일을 못찾았을 경우 커널 패닉이 일어날 경우에 대한 메시지가 있었다.  
