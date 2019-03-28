@@ -217,6 +217,8 @@ KEYWORD 리스트들은 KEYWORD 매크로를 통해 keyword_info 구조체 배�
 
 ### 액션 리스트 및 서비스 리스트의 실행  
 
+#### 액션 리스트  
+
 액션 리스트 내의 명령어가 실행되는 과정을 먼저 살펴본다.  
 action_remove_queue_head() 함수를 통해서 전역으로 선언된 액션 리스트 헤더를 얻어온다.  
 액션 리스트를 command 구조체로 변환하고, 각 명령어에 매핑된 함수를 가져온다.  
@@ -240,4 +242,10 @@ void drain_action_queue(void)
 }  
 ```
 
-*/init/builtins.c*  
+#### 서비스 리스트  
+
+'on boot' 섹선의 마지막 명령어인 class_start 명령어를 통해 service 섹션의 모든 프로세스를 실행하게 된다.
+
+```
+service_for_each_class(args[1], service_start_if_not_disabled);  
+```
