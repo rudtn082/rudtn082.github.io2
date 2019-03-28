@@ -32,7 +32,7 @@ featured: true
 #### 정적 디바이스 노드 생성  
 
 리눅스에서는 디바이스 노드파일을 "/dev" 디렉터리에 정의하고, 이 노드파일을 통해 디바이스 드라이버에 접근한다.  
-하지만 안드로이드는 존재하지 않고, **init 프로세스가 두 가지 방법으로 디바이스 노드 파일을 생성**한다.
+하지만 안드로이드는 "/dev" 디렉터리가 존재하지 않고, **init 프로세스가 두 가지 방법으로 디바이스 노드 파일을 생성**한다.
 
 ① 미리 정의된 디바이스 정보를 바탕으로 init 프로세스가 실행될 때 일괄적으로 디바이스 노드 파일 생성 - **콜드 플러그(Cold Plug)**  
 ② 시스템 동작 중 USB와 같은 장치가 삽입될 때 이벤트 처리로 디바이스 노드 파일을 동적으로 생성 - **핫 플러그(Hot Plug)**  
@@ -255,3 +255,83 @@ static void restart_processes()
 ```
 
 따라서 자식프로세스가 종료되어 SIGCHLD 시그널을 발생시키더라도 이 함수를 통해 재시작하게 된다.  
+
+
+
+### 프로퍼티 서비스  
+
+init 프로세스의 이벤트 처리 루프에서는 프로퍼티의 변경 요청 이벤트도 있다.  
+* 프로퍼티는 안드로이드 시스템이 동작하는 데 필요한 **각종 설정 값을 동작 중인 모든 프로세스에서 공유하기 위해 프로퍼티라는 저장 공간을 사용**한다.  
+* 프로퍼티는 키(key)와 값(value)로 구성되며, '키 = 값' 형태로 사용된다.  
+* 안드로이드에서는 이 값을 변경할 때는 권한을 확인하는 과정이 있다.  
+* 모든 동작중인 프로세스는 프로퍼티의 값을 조회할 수 있다.  
+* 프로퍼티 값을 **변경하는 것은 init 프로세스만이 가능**, 다른 프로세스는 변경 요청.  
+* 프로퍼티의 값이 변경되면 init.rc에 정의된 특정 조건을 만족하는 경우 조건에 해당하는 동작 실행, **이를 트리거(trigger)**라 한다.  
+
+#### 프로퍼티 초기화  
+
+init 프로세스의 main() 함수 초기에 **property_init() 함수를 통해서 프로퍼티 영역을 초기화한다.  
+property_init() 함수는 프로퍼티의 값을 저장하기 위한 공유 메모리를 생성하는데, 이를 위해 ashmem(Android Shared Memory)을 사용한다.  
+*프로퍼티 값을 저장하거나 조회할때는 get(), set() 함수를 이용한다.*  
+
+```
+void property_init(void)  
+{  
+    init_property_area(); // 공유 메모리 영역 구성.  
+    load_properties_from_file(PROP_PATH_RAMDISK_DEFAULT); // 파일로 부터 초기값을 읽어 프로퍼티 값을 설정.  
+}  
+```
+
+init 프로세스는 start_property_service() 함수를 호출하여 프로퍼티 서비스를 시작한다.  
+
+```
+property_set_fd = start_property_service(); // 프로퍼티 서비스 시작.  
+```
+
+```
+int start_property_service(void)  
+{  
+    int fd;  
+    load_properties_from_file(PROP_PATH_SYSTEM_BUILD); // 프로퍼티의 기본값을 읽어 프로퍼티 값을 설정.  
+    load_properties_from_file(PROP_PATH_SYSTEM_DEFAULT);  
+    load_properties_from_file(PROP_PATH_LOCAL_OVERRIDE);  
+
+    /* Read persistent properties after all default values have been loaded. */  
+    load_persistent_properties(); // /data/property 디렉터리에 저장돼 있는 프로퍼티 값을 읽는다. (동작 중에 다른 프로세스에 의해 생성된 프로퍼티 값이나 변경된 값들)  
+    fd = create_socket(PROP_SERVICE_NAME, SOCK_STREAM, 0666, 0, 0); // property_service라는 이름의 도메인 소켓 생성.  
+}  
+```
+
+#### 프로퍼티 변경 요청 처리  
+
+앞에서 생성한 소켓으로 프로퍼티 값의 변경 요청 메시지가 수신되면 **handle_property_set_fd() 함수가 호출**된다.  
+
+```
+void handle_property_set_fd(int fd)  
+{  
+    /* Check socket options here */  
+    if (getsockopt(s, SOL_SOCKET, SO_PEERCRED, &cr, &cr_size) < 0) { // 소켓으로 부터 값을 얻어온다.  
+        close(s);  
+        ERROR("Unable to recieve socket options\n");  
+        return;  
+    }  
+    :  
+    :  
+    switch(msg.cmd) {  
+    case PROP_MSG_SETPROP:  
+        if(memcmp(msg.name,"ctl.",4) == 0) { // "ctl"은 시스템 프로퍼티 값을 변경하는 것이 아니라, 프로세스의 시작, 종료를 요청하는 메시지.  
+            if (check_control_perms(msg.value, cr.uid, cr.gid)) { // check_control_perms() 함수를 이용하여 접근 권한 검사. (system server, root, 해당 프로세스만 종료하거나 시작할 수 있음)  
+                handle_control_message((char*) msg.name + 4, (char*) msg.value);  
+            } else {  
+                ERROR("sys_prop: Unable to %s service ctl [%s] uid: %d pid:%d\n", msg.name + 4, msg.value, cr.uid, cr.pid);  
+            }  
+        } else { // 시스템의 프로퍼티를 변경하는 데 사용.  
+            if (check_perms(msg.name, cr.uid, cr.gid)) { // 접근 권한은 check_perms() 함수를 호출하여 검사한다.  
+                property_set((char*) msg.name, (char*) msg.value); // 프로퍼티 값을 변경한다.  
+            }  
+        }  
+    }  
+}  
+```
+
+프로퍼티 값을 변경하고, 문제가 없다면 **property_changed() 함수가 호출**된다.  
