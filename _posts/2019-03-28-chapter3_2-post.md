@@ -32,7 +32,7 @@ featured: true
 #### 정적 디바이스 노드 생성  
 
 리눅스에서는 디바이스 노드파일을 "/dev" 디렉터리에 정의하고, 이 노드파일을 통해 디바이스 드라이버에 접근한다.  
-하지만 안드로이드는 "/dev" 디렉터리가 존재하지 않고, **init 프로세스가 두 가지 방법으로 디바이스 노드 파일을 생성**한다.
+하지만 안드로이드의 루트 파일 시스템은 "/dev" 디렉터리가 존재하지 않고, **init 프로세스가 두 가지 방법으로 디바이스 노드 파일을 생성**한다.
 
 ① 미리 정의된 디바이스 정보를 바탕으로 init 프로세스가 실행될 때 일괄적으로 디바이스 노드 파일 생성 - **콜드 플러그(Cold Plug)**  
 ② 시스템 동작 중 USB와 같은 장치가 삽입될 때 이벤트 처리로 디바이스 노드 파일을 동적으로 생성 - **핫 플러그(Hot Plug)**  
@@ -78,7 +78,6 @@ devperms 구조체를 참고하여 **"/dev" 디렉터리에 디바이스 노드 
 
 **콜드 플러그 처리 절차**  
 device_init() 함수는 uevent를 수신하기 위한 소켓을 생성하고, coldboot()를 통해 내부적으로 do_coldboot() 함수를 호출하여 "/sys" 디렉터리에 등록된 드라이버에 대해 콜드플러그 처리를 한다.  
-*devices.c 파일에 콜드 플러그될 드라이버를 정의해뒀는데 왜 다시 /sys 디렉터리를 통해서 콜드플러그 처리를 할까??*
 
 ```
 int device_init(void)  
@@ -101,14 +100,15 @@ static void do_coldboot(int event_fd, DIR *d)
 {  
     fd = openat(dfd, "uevent", O_WRONLY); // uevent 파일을 찾아서  
     if(fd >= 0) {  
-        write(fd, "add\n", 4); // "add" 추가로 uevent 발생  
+        write(fd, "add\n", 4); // "add" 메시지 추가로 uevent 발생  
         close(fd);  
         handle_device_fd(event_fd); // uevent 수신하여 처리  
     }  
 }  
 ```
 
-그리고 handle_device_fd() 함수에서 uevent를 수신하여 실제 노드 파일을 생성한다.  
+그리고 handle_device_fd() 함수에서 uevent를 수신하여 메시지를 수신해서 uevent구조체에 할당한다.  
+uevent 구조체를 완성하면 handle_device_event() 함수를 호출하여 실제 노드 파일을 생성한다.  
 **/dev 디렉터리 아래에 하위 디렉터리를 생성**한다.  
 
 ```
@@ -270,7 +270,7 @@ init 프로세스의 이벤트 처리 루프에서는 프로퍼티의 변경 요
 
 #### 프로퍼티 초기화  
 
-init 프로세스의 main() 함수 초기에 **property_init() 함수를 통해서 프로퍼티 영역을 초기화한다.  
+init 프로세스의 main() 함수 초기에 **property_init() 함수**를 통해서 프로퍼티 영역을 초기화한다.  
 property_init() 함수는 프로퍼티의 값을 저장하기 위한 공유 메모리를 생성하는데, 이를 위해 ashmem(Android Shared Memory)을 사용한다.  
 *프로퍼티 값을 저장하거나 조회할때는 get(), set() 함수를 이용한다.*  
 
