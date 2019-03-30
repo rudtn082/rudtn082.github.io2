@@ -42,13 +42,15 @@ JNI는 일반적으로 다음과 같은 경우에 주로 활용한다.
 
 ### JNI의 기본 원리 이해  
 
+
 #### 자바에서 C 라이브러리 함수 호출하기  
+
 
 ##### 자바 코드 작성  
 ![jni1](/images/post/jni1.png "jni1")  
 
-* JNI 네이티브 함수와 연결할 메서드를 **native 키워드**를 이용해서 선언한다.  
-* 네이티브 메서드가 실제로 구현돼 있는 C 라이브러리를 **System.loadLibraray() 메서드**를 호출해서 로딩한다.  
+JNI 네이티브 함수와 연결할 메서드를 **native 키워드**를 이용해서 선언한다.  
+네이티브 메서드가 실제로 구현돼 있는 C 라이브러리를 **System.loadLibraray() 메서드**를 호출해서 로딩한다.  
 
 
 ##### 자바 코드 컴파일  
@@ -62,35 +64,36 @@ Exception in thread "main" java.lang.UnsatisfiedLinkError: no hellojni in java.l
     at HelloJNI.<clinit>(HelloJNI.java:6)
 ```
 
+
 ##### C 헤더 파일 생성  
 javah툴을 이용하여 헤더파일을 생성한다.  
-생성된 h파일의 내용은 다음과 같다.  
-
+생성된 .h파일의 내용은 다음과 같다.  
 ![jni2](/images/post/jni2.png "jni2")  
 
 
 ##### C/C++ 코드 구현  
 헤더파일에 정의된 함수 원형을 .c파일에 복사하여 구현을 완료한다. 이 때 **매개변수의 이름을 지정**해 주어야한다.  
-
 ![jni3](/images/post/jni3.png "jni3")  
+
 
 ##### C 공유 라이브러리 생성  
 헤더 파일과 소스 파일을 가지고 공유 라이브러리를 만든다. 윈도우에서는 .dll파일을 생성한다.  
 나는 우분투에서 진행했기 때문에 아래와 같은 명령어로 .so파일을 생성한다.  
 
 ```
-gcc -I/(JAVA_HOME)/include/ -I/(JAVA_HOME)/include/linux -shared -fPIC helloJni.c -o libhellojni.so
+gcc -I/(JAVA_HOME)/include/ -I/(JAVA_HOME)/include/linux -shared -fPIC hellojni.c -o libhellojni.so
 ```
 
 **JAVA_HOME부분에는 JDK가 설치된 경로를 입력한다.**  
 나와 같은 경우에는 다음과 같이 입력했다.  
 ```
-gcc -I/usr/lib/jvm/java5/jdk1.5.0_22/include/ -I/usr/lib/jvm/java5/jdk1.5.0_22/include/linux -shared -fPIC helloJni.c -o libhellojni.so
+gcc -I/usr/lib/jvm/java5/jdk1.5.0_22/include/ -I/usr/lib/jvm/java5/jdk1.5.0_22/include/linux -shared -fPIC hellojni.c -o libhellojni.so
 ```
 
 **-shared = .so파일을 생성하기 위해 붙여준다.**  
 **-fPIC = 우분투가 64bit 일 때 붙여준다.**  
 **.so 파일을 만들때 파일 앞에 lib를 붙여줘야 한다!**  
+
 
 ##### lib path 추가  
 
@@ -106,10 +109,10 @@ source /etc/profile
 sudo mv libhellojni.so /usr/lib/
 ```
 
+
 ##### 자바 프로그램 실행  
 
 자바 클래스를 실행하면 앞서 작업한 내용이 제대로 실행되는 것을 볼 수 있다.  
-
 ```
 java JNIHello
 ```
