@@ -29,6 +29,7 @@ featured: true
 이처럼 프레임워크에서 유기적으로 동작하게 만들려면 자바레이어(상위)와 C/C++ 레이어(하위)를 상호 연결해 주는 매개체가 필요하다.  
 자바와 C/C++ 모듈 간의 인터페이스를 가능하게 해주는 것이 바로 **JNI(Java Native Interface)**다.  
 
+
 JNI는 일반적으로 다음과 같은 경우에 주로 활용한다.  
 * 빠른 처리 속도를 요구하는 루틴 작성(자바는 C/C++보다 느리기 때문에 C/C++로 작성하고 JNI를 통해 자바에서 호출하는 방법)  
 * 하드웨어 제어(하드웨어 제어 코드를 C로 작성하면 JNI를 통해 자바에서도 하드웨어 제어 가능)  
@@ -36,9 +37,10 @@ JNI는 일반적으로 다음과 같은 경우에 주로 활용한다.
 
 
 **JNI에 대해 알아야 하는 이유**  
-* 안드로이드에서는 JNI를 이용하여 자바와 C/C++의 장점을 동시에 활용하고 있다.  
-* 안드로이드 SDK를 토대로 만든 안드로이드 애플리케이션은 달빅 가상 머신(Dalvik Virtual Machine) 위에서 동작하는 자바 기반의 프로그램이다. 때문에 C/C++로 생성한 애플리케이션에 비해 느린 실행속도 등의 한계를 가진다. 프로그램의 주요 모듈은 자바 개발자가, 성능에 민감한 모듈은 C/C++ 개발자가 작성한다.  
-* 안드로이드를 탑재할 장치에 안드로이드 프레임워크에서 지원하지 않는 하드웨어가 설치돼 있다면 디바이스 드라이버를 C언어로 구현하고 JNI로 매핑시켜야 한다.  
+안드로이드에서는 JNI를 이용하여 자바와 C/C++의 장점을 동시에 활용하고 있다.  
+안드로이드 SDK를 토대로 만든 안드로이드 애플리케이션은 달빅 가상 머신(Dalvik Virtual Machine) 위에서 동작하는 자바 기반의 프로그램이다. 때문에 C/C++로 생성한 애플리케이션에 비해 느린 실행속도 등의 한계를 가진다. 프로그램의 주요 모듈은 자바 개발자가, 성능에 민감한 모듈은 C/C++ 개발자가 작성한다.  
+안드로이드를 탑재할 장치에 안드로이드 프레임워크에서 지원하지 않는 하드웨어가 설치돼 있다면 디바이스 드라이버를 C언어로 구현하고 JNI로 매핑시켜야 한다.  
+
 
 ### JNI의 기본 원리 이해  
 
@@ -68,6 +70,7 @@ Exception in thread "main" java.lang.UnsatisfiedLinkError: no hellojni in java.l
 ##### C 헤더 파일 생성  
 javah툴을 이용하여 헤더파일을 생성한다.  
 생성된 .h파일의 내용은 다음과 같다.  
+
 ![jni2](/images/post/jni2.png "jni2")  
 
 
@@ -84,7 +87,7 @@ javah툴을 이용하여 헤더파일을 생성한다.
 gcc -I/(JAVA_HOME)/include/ -I/(JAVA_HOME)/include/linux -shared -fPIC hellojni.c -o libhellojni.so
 ```
 
-**JAVA_HOME부분에는 JDK가 설치된 경로를 입력한다.**  
+**(JAVA_HOME)부분에는 JDK가 설치된 경로를 입력한다.**  
 나와 같은 경우에는 다음과 같이 입력했다.  
 ```
 gcc -I/usr/lib/jvm/java5/jdk1.5.0_22/include/ -I/usr/lib/jvm/java5/jdk1.5.0_22/include/linux -shared -fPIC hellojni.c -o libhellojni.so
@@ -111,10 +114,8 @@ sudo mv libhellojni.so /usr/lib/
 
 
 ##### 자바 프로그램 실행  
-
 자바 클래스를 실행하면 앞서 작업한 내용이 제대로 실행되는 것을 볼 수 있다.  
 ```
 java JNIHello
 ```
-
 ![jni4](/images/post/jni4.png "jni4")  
