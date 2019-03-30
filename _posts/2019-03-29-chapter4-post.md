@@ -70,7 +70,6 @@ Exception in thread "main" java.lang.UnsatisfiedLinkError: no hellojni in java.l
 ##### C 헤더 파일 생성  
 javah툴을 이용하여 헤더파일을 생성한다.  
 생성된 .h파일의 내용은 다음과 같다.  
-
 ![jni2](/images/post/jni2.png "jni2")  
 
 
@@ -95,7 +94,7 @@ gcc -I/usr/lib/jvm/java5/jdk1.5.0_22/include/ -I/usr/lib/jvm/java5/jdk1.5.0_22/i
 
 **-shared = .so파일을 생성하기 위해 붙여준다.**  
 **-fPIC = 우분투가 64bit 일 때 붙여준다.**  
-**.so 파일을 만들때 파일 앞에 lib를 붙여줘야 한다!**  
+**.so 파일을 만들때 파일이름 앞에 lib를 붙여줘야 한다!**  
 
 
 ##### lib path 추가  
@@ -116,6 +115,6 @@ sudo mv libhellojni.so /usr/lib/
 ##### 자바 프로그램 실행  
 자바 클래스를 실행하면 앞서 작업한 내용이 제대로 실행되는 것을 볼 수 있다.  
 ```
-java JNIHello
+java HelloJNI
 ```
 ![jni4](/images/post/jni4.png "jni4")  
