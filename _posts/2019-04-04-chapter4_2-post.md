@@ -56,7 +56,7 @@ cpp파일 까지 작성을 완료한 후 이전 포스트 처럼 .so파일을 �
 여기서는 c가 아닌 cpp이기때문에 gcc가 아닌 g++로 컴파일을 한다.  
 
 ```
-g++ -I/usr/lib/jvm/java5/jdk1.5.0_22/include/ -I/usr/lib/jvm/java5/jdk1.5.0_22/include/linux -shared -fPIC jnifunc.cpp -o libjnifunc.so
+g++ -I/(jdk경로)/include/ -I/(jdk경로)/include/linux -shared -fPIC jnifunc.cpp -o libjnifunc.so
 
 sudo mv libjnifunc.so /usr/lib/
 
@@ -65,7 +65,7 @@ java JniFuncMain
 
 JniFuncMain의 결과는 다음과 같다.  
 
-![jni8](/images/post/jni8.png "jni9")  
+![jni9](/images/post/jni9.png "jni9")  
 
 #### 안드로이드에서의 활용 예  
 * frameworks/base/core/jni
