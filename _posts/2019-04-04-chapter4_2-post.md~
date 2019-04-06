@@ -56,7 +56,7 @@ cpp파일 까지 작성을 완료한 후 이전 포스트 처럼 .so파일을 �
 여기서는 c가 아닌 cpp이기때문에 gcc가 아닌 g++로 컴파일을 한다.  
 
 ```
-g++ -I/(jdk경로)/include/ -I/usr/lib/jvm/java5/jdk1.5.0_22/include/linux -shared -fPIC jnifunc.cpp -o libjnifunc.so
+g++ -I/(jdk경로)/include/ -I/(jdk경로)/include/linux -shared -fPIC jnifunc.cpp -o libjnifunc.so
 
 sudo mv libjnifunc.so /usr/lib/
 
@@ -72,7 +72,65 @@ JniFuncMain의 결과는 다음과 같다.
 * frameworks/base/services/jni
 * frameworks/base/media/jni
 
-
+  
+  
+  
 ### C프로그램에서 자바 클래스 실행하기  
 
-#### 호출 API 사용 예제  
+지금까지는 자바 코드가 메인 프로그램이고 자바 쪽 코드에서 네이티브 메서드를 통해 C 함수를 호출해서 JNI를 이용하는 방식이었다.  
+지금부터는 C/C++로 구현된 메인 애플리케이션에서 자바 클래스를 실행하는 JNI이용 방식이다.  
+
+#### C 코드(invocationApi.c) 살펴보기  
+
+자바 가상 머신을 생성하고 실행할 클래스 및 메서드를 받아와 호출하는 코드이다.  
+
+![jni10](/images/post/jni10.png "jni10")  
+
+#### 자바 코드(InvocationApiTest.java) 살펴보기
+
+main() 메서드 하나만 포함한 간단한 클래스이다.  
+
+![jni11](/images/post/jni11.png "jni11")  
+
+#### 컴파일 및 실행
+
+자바 코드 컴파일은 다음과같이 javac를 이용하여 진행한다.  
+```
+javac InvocationApiTest.java
+```
+
+책에서와 달리 우분투에서 진행했기 때문에 C 코드는 .exe 파일이 아닌 .out 파일을 생성한다.  
+컴파일시 libjvm.so를 포함해야 하므로 /etc/profile의 LD_LIBRARY_PATH를 수정해준다.  
+
+```
+sudo nano /etc/profile
+```
+
+export LD_LIBRARY_PATH 부분이 존재한다면 libjvm.so 파일이 존재하는 위치를 추가해준다.  
+나는 /usr/lib/jvm/java5/jdk1.5.0_22/jre/lib/amd64/server 위치에 있었기 때문에 다음과 같이 입력했다.  
+
+export LD_LIBRARY_PATH=/usr/lib:/usr/local/lib:/usr/lib/jvm/java5/jdk1.5.0_22/jre/lib/amd64/server  
+
+```
+source /etc/profile
+```
+
+이제 C파일을 다음과 같은 명령어를 통해 컴파일한다.  
+```
+gcc -I/(JAVA_HOME)/include/ -I/(JAVA_HOME)/include/linux -L/(libjvm.so 위치) -fPIC invocationApi.c -o invocationApi.out -ljvm
+```
+
+나와 같은 경우에는 다음과 같이 입력했다.
+
+```
+gcc -I/usr/lib/jvm/java5/jdk1.5.0_22/include/ -I/usr/lib/jvm/java5/jdk1.5.0_22/include/linux -L/usr/lib/jvm/java5/jdk1.5.0_22/jre/lib/amd64/server -fPIC invocationApi.c -o invocationApi.out -ljvm
+```
+
+이제 실행 파일인 invocationApit.out을 실행한다.  
+
+```
+./invocationApi.out
+```
+
+![jni12](/images/post/jni12.png "jni12")  
+
