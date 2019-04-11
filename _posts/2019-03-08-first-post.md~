@@ -9,8 +9,8 @@ tags: [test]           #포스트의 태그
 imagefeature: cover_test.jpg  #포스트의 앞에 나오는 사진
 mathjax:
 chart:
-comments: false         #포스트의 댓글 사용 여부
-share: false            #포스트의 댓글 공유가능 여부
+comments: true         #포스트의 댓글 사용 여부
+share: ture            #포스트의 댓글 공유가능 여부
 featured: false         #포스트가 중요한 글인지 여부
 ---
 
