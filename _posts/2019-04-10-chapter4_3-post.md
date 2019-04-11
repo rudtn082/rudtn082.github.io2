@@ -30,11 +30,11 @@ featured: true
 
 #### 안드로이드 NDK환경 설정  
 
-1. NDK 다운로드  
+1.NDK 다운로드  
 
 http://developer.android.com/intl/ko/ndk/downloads/index.html  
 
-2. 압축 해제  
+2.압축 해제  
 
 적절한 경로에 압축을 해제한다.  
 
@@ -42,7 +42,7 @@ http://developer.android.com/intl/ko/ndk/downloads/index.html
 unzip android-ndk-r19c-linux-x86_64.zip
 ```
 
-3. NDK 경로설정  
+3.NDK 경로설정  
 
 ```
 sudo nano ~/.bashrc
@@ -83,9 +83,7 @@ javah 유틸을 실행하여 헤더 파일을 생성한다.
 프로젝트 밑에 jni폴더를 생성하고 JNI 네이티브 함수를 구현한다.    
 
 ![ndk4](/images/post/ndk4.png "ndk4")  
-
 ![ndk5](/images/post/ndk5.png "ndk5")  
-
 ![ndk6](/images/post/ndk6.png "ndk6")  
 
 동일하게 jni폴더에 Android.mk 파일을 작성한다.  
