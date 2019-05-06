@@ -89,6 +89,7 @@ public void onDestroy() {
 ### 안드로이드 서비스 분류  
 
 안드로이드 서비스는 다음과 같이 크게 프레임워크에서 기본적으로 제공하는 **시스템 서비스**와 애플리케이션 개발자가 Service 클래스를 상속해서 구현한 **애플리케이션 서비스**로 구분할 수 있다.  
+
 ![service1](/images/post/service1.png "service1")  
 
 ### 안드로이드 애플리케이션 서비스  
@@ -100,6 +101,7 @@ public void onDestroy() {
 * 바인딩을 통한 서비스 원격 제어(서비스를 원격 제어할 수 있게 서비스에 연결하는 것)  
 
 애플리케이션이 서비스를 생성하려면 startService(), bindService()같은 API를 상황에 맞게 이용하면 된다. 백그라운드에서 특정 동작을 하는 서비스를 실행할 때는 **startService()**, 서비스에 바인딩해서 서비스가 제공하는 인터페이스를 통해 서비스를 제어하고 싶다면 **bindService()**를 통해 서비스를 생성한다. 두 서비스의 생명 주기는 약간 다른 것을 확인할 수 있다.  
+
 ![service2](/images/post/service2.png "service2")  
 
 startService()나 bindService()로 시작된 서비스 모두 onCreate()와 onDestroy() 콜백 메서드가 호출된다. onCreate() 메서드는 서비스가 처음 생성될 때 호출되며 일반적으로 서비스를 초기화하는 코드가 포함된다. onDestroy()는 서비스가 종료되기 직전에 호출되는데, 이때 서비스가 사용한 리소스를 모두 해제해야 한다.  
