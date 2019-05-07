@@ -114,3 +114,90 @@ bindService()에 의해 시작된 서비스에서 onBind()는 클라이언트가
 
 
 #### 애플리케이션 서비스의 분류  
+
+애플리케이션 서비스를 로컬 서비스와 리모트 서비스로 구분한다. 이를 구분하는 기준은 서비스와 이를 생선한 서비스 클라이언트(보통 액티비티)가 동일한 프로세스에서 동작하고 있는지 여부다.  
+
+![service3](/images/post/service3.png "service3")  
+
+위의 그림과 같이 생성된 서비스가 자신과 동일한 프로세스에서 실행되는 경우 **로컬 서비스**라 부른다. 로컬 서비스는 자신을 생성한 애플리케이션 내에서만 사용될 수 있으며 애플리케이션이 종료하면 함께 종료한다.  
+**리모트 서비스**는 자신을 생성한 액티비티와는 별개의 독립적인 프로세스 위에서 동작하기 때문에 메인 애플리케이션이 종료하더라도 계속 동작한다. **잘못 구현된 리모트 서비스는 프로그램이 종료하더라도 시스템 자원(배터리 등)을 비효율적으로 소모할 수 있기 때문에 설계에 신중을 기해야 한다.  
+
+로컬 서비스와 리모트 서비스와의 가장 큰 차이는 서비스 제어를 위한 바인딩 방법이다.  
+로컬 서비스의 경우는 서비스와 서비스를 이용하는 클라이언트 프로그램이 동일 프로세스에서 동작하기 때문에 로컬 서비스 바인딩은 클라이언트 프로그램이 로컬 서비스의 레퍼런스만 얻으면 된다.  
+리모트 서비스의 경우는 액티비티와 자신이 모두 별개의 프로세스에서 동작하므로 (다음 장에서 배울)IPC 메커니즘을 이용해야 한다.  
+
+로컬 서비스와 리모트 서비스의 바인딩 과정이 어떻게 다른지를 예제를 분석하며 알아보겠다.  
+
+##### 로컬 서비스  
+
+Local Service Binding 예제는 크게 서비스를 나타내는 LocalService.java와 서비스를 이용하는 액티비티인 LocalServiceActivities.java로 구성돼 있다.  
+Bind Service 버튼을 누르면 doBindService()가 호출된다.  
+```
+private OnClickListener mBindListener = new OnClickListener() {
+    public void onClick(View v) {
+        doBindService();
+    }
+};
+```
+
+이 메서드에서 내부적으로 bindService() API를 사용해서 LocalService 바인딩을 시도한다.  
+*bindService(LocalService 실행하기 위한 인텐트, 서비스와의 바인딩 연결을 처리할 객체, 바인딩할 서비스가 없는 경우 자동 서비스 생성 플래그)*  
+```
+void doBindService() {
+    if (bindService(new Intent(Binding.this, LocalService.class),
+        mConnection, Context.BIND_AUTO_CREATE)) {
+        mShouldUnbind = true;
+    } else {
+        Log.e("MY_APP_TAG", "Error: The requested service doesn't " +
+                "exist, or this client isn't allowed access to it.");
+    }
+}
+```
+
+바인딩할 서비스가 생성됐으므로 안드로이드는 바인딩 처리를 위해 서비스의 onBind() 콜백 메서드를 호출한다.  
+onBind 메서드는 액티비티가 LocalService 자신과 연결할 수 있게 LocalBinder 객체를 반환한다.  
+```
+public IBinder onBind(Intent intent) {
+        return mBinder;
+    }
+
+private final IBinder mBinder = new LocalBinder();
+
+public class LocalBinder extends Binder {
+    LocalService getService() {
+        return LocalService.this;
+    }
+}
+```
+
+바인딩을 처리할 객체를 제대로 생성했다면(LocalBinder), 안드로이드 프레임워크는 서비스 클라이언트 측 메서드를 호출한다.  
+이 때 LocalBinder 객체의 getService() 메서드를 호출해서 바인딩하려고 했던 LocalService 객체의 레퍼런스 값을 구한다.  
+이렇게 구한 LocalBinder 객체의 레퍼런스 값을 mBoundService 멤버 필드에 저장하면 서비스 바인딩이 마무리된다.  
+```
+private ServiceConnection mConnection = new ServiceConnection() {
+    public void onServiceConnected(ComponentName className, IBinder service) {
+        mBoundService = ((LocalService.LocalBinder)service).getService();
+        Toast.makeText(Binding.this, R.string.local_service_connected,
+            Toast.LENGTH_SHORT).show();
+    }
+
+    public void onServiceDisconnected(ComponentName className) {
+        mBoundService = null;
+        Toast.makeText(Binding.this, R.string.local_service_disconnected,
+            Toast.LENGTH_SHORT).show();
+        }
+    };
+```
+
+서비스가 바인딩 되고 나면 액티비티는 해당 서비스가 가진 모든 메서드와 멤버 필드 값을 mBoundService 멤버 필드를 통해 접근할 수 있게 된다.  
+
+##### 리모트 서비스  
+
+Remote Service Binding 예제는 Local Service Binding 과는 다르게 액티비티나 서비스 파일 이외에 ISecondary.aidl이라는 AIDL 파일과 이 파일에 의해 자동 생성된 ISecondary.java 파일이 추가된 것을 알 수 있다.  
+*ISecondary.aidl은 액티비티와 서비스의 통신을 위한 인터페이스 정의*
+*ISecondary.java는 안드로이드가 자동 생성하며 인터페이스를 기반으로 액티비티와 서비스가 서로 통신할 수 있게 마샬링/언마샬링을 수행*
+*마샬링 - 객체의 메모리 구조를 저장이나 전송을 위해서 적당한 자료형태로 변형*
+
+ISecondary.aidl을 통해 자동으로 생성된 ISecondary.java는 서비스 클라이언트와 리모트 서비스 간의 ISecondary 인터페이스에 기반한 바인더 IPC 연결을 설정한다. 즉, 이 코드를 통해서 RemoteServiceBinding 액티비티는 RemoteService 서비스가 제공하는 ISecondary 인터페이스에 포함된 getPid() 메서드를 마치 해당 클래스에 포함된 매서드를 호출하듯 호출할 수 있다.  
+
+Bind Service 버튼을 누르면 액티비티와 동립적인 프로세스에서 RemoteService가 실행된다. doBindService()가 호출된다.  
