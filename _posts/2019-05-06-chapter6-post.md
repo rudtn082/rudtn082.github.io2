@@ -158,8 +158,8 @@ void doBindService() {
 onBind 메서드는 액티비티가 LocalService 자신과 연결할 수 있게 LocalBinder 객체를 반환한다.  
 ```
 public IBinder onBind(Intent intent) {
-        return mBinder;
-    }
+    return mBinder;
+}
 
 private final IBinder mBinder = new LocalBinder();
 
@@ -185,8 +185,8 @@ private ServiceConnection mConnection = new ServiceConnection() {
         mBoundService = null;
         Toast.makeText(Binding.this, R.string.local_service_disconnected,
             Toast.LENGTH_SHORT).show();
-        }
-    };
+    }
+};
 ```
 
 서비스가 바인딩 되고 나면 액티비티는 해당 서비스가 가진 모든 메서드와 멤버 필드 값을 mBoundService 멤버 필드를 통해 접근할 수 있게 된다.  
@@ -194,10 +194,76 @@ private ServiceConnection mConnection = new ServiceConnection() {
 ##### 리모트 서비스  
 
 Remote Service Binding 예제는 Local Service Binding 과는 다르게 액티비티나 서비스 파일 이외에 ISecondary.aidl이라는 AIDL 파일과 이 파일에 의해 자동 생성된 ISecondary.java 파일이 추가된 것을 알 수 있다.  
-*ISecondary.aidl은 액티비티와 서비스의 통신을 위한 인터페이스 정의*
-*ISecondary.java는 안드로이드가 자동 생성하며 인터페이스를 기반으로 액티비티와 서비스가 서로 통신할 수 있게 마샬링/언마샬링을 수행*
-*마샬링 - 객체의 메모리 구조를 저장이나 전송을 위해서 적당한 자료형태로 변형*
+
+*ISecondary.aidl은 액티비티와 서비스의 통신을 위한 인터페이스 정의*  
+*ISecondary.java는 안드로이드가 자동 생성하며 인터페이스를 기반으로 액티비티와 서비스가 서로 통신할 수 있게 마샬링/언마샬링을 수행*  
+*마샬링 - 객체의 메모리 구조를 저장이나 전송을 위해서 적당한 자료형태로 변형*  
 
 ISecondary.aidl을 통해 자동으로 생성된 ISecondary.java는 서비스 클라이언트와 리모트 서비스 간의 ISecondary 인터페이스에 기반한 바인더 IPC 연결을 설정한다. 즉, 이 코드를 통해서 RemoteServiceBinding 액티비티는 RemoteService 서비스가 제공하는 ISecondary 인터페이스에 포함된 getPid() 메서드를 마치 해당 클래스에 포함된 매서드를 호출하듯 호출할 수 있다.  
 
-Bind Service 버튼을 누르면 액티비티와 동립적인 프로세스에서 RemoteService가 실행된다. doBindService()가 호출된다.  
+Bind Service 버튼을 눌렀을 때 로컬 서비스와 비슷하게 bindService()에서 첫 번째 인자에 리모트 서비스를 실행하기 위한 인텐트가 전달된다.  
+```
+private OnClickListener mBindListener = new OnClickListener() {
+    public void onClick(View v) {
+        Intent intent = new Intent(Binding.this, RemoteService.class);
+        intent.setAction(ISecondary.class.getName());
+        bindService(intent, mSecondaryConnection, Context.BIND_AUTO_CREATE);
+    }
+};
+```
+
+서비스가 생성되고 나면 서비스 생명주기에 따라 onCreate() 메서드와 onBind() 메서드가 차례대로 호출된다. onCreate() 메서드는 앞의 LocalService와 같이 서비스의 생성을 알림 메시지를 통해 알린다. onBind() 메서드의 주된 역할은 바인더 IPC를 처리할 서비스 바인더 객체(여기서는 mSecondaryBinder)를 생성한 후 이를 시스템에 반환하는 것이다.  
+```
+private final ISecondary.Stub mSecondaryBinder = new ISecondary.Stub() {
+    public int getPid() {
+        return Process.myPid();
+    }
+    public void basicTypes(int anInt, long aLong, boolean aBoolean,
+        float aFloat, double aDouble, String aString) {
+    }
+};
+
+public IBinder onBind(Intent intent) {
+    if (IRemoteService.class.getName().equals(intent.getAction())) {
+        return mBinder;
+    }
+    if (ISecondary.class.getName().equals(intent.getAction())) {
+        return mSecondaryBinder;
+    }
+    return null;
+}
+```
+
+바인딩 준비가 끝나면 안드로이드 프레임워크는 bindService()의 두 번째 인자로 넘긴 연결 객체의 onServiceConnected()콜백 메서드를 호출한다.  
+바인딩이 끝나면 mSecondaryService 멤버 변수에 저장된 서비스 프록시 객체를 통해 RemoteService 서비스의 getPid() 메서드를 마치 자신의 메서드인 것처럼 호출할 수 있게 된다.  
+```
+private ServiceConnection mSecondaryConnection = new ServiceConnection() {
+    public void onServiceConnected(ComponentName className, IBinder service) {
+        mSecondaryService = ISecondary.Stub.asInterface(service); // 서비스 프록시 객체가 생성되어 저장
+        mKillButton.setEnabled(true);
+    }
+    public void onServiceDisconnected(ComponentName className) {
+        mSecondaryService = null;
+        mKillButton.setEnabled(false);
+    }
+};
+```
+
+바인딩한 서비스를 이용하기 위해서 'Kill Process'버튼을 누르면 서비스 프록시 객체의 getPid() 서비스 프록시 메서드가 호출된다. 액티비티는 이렇게 구한 서비스 프로세스를 Process.killProcess() 메서드를 통해 강제 종료한다.  
+```
+private OnClickListener mKillListener = new OnClickListener() {
+    public void onClick(View v) {
+        if (mSecondaryService != null) {
+            try {
+                int pid = mSecondaryService.getPid();
+                Process.killProcess(pid);
+                mCallbackText.setText("Killed service process.");
+            } catch (RemoteException ex) {
+                Toast.makeText(Binding.this,
+                        R.string.remote_call_failed,
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+};
+```
