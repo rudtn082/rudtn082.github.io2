@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[안드로이드 프레임워크 개선] - PackageManager"
+title: "[안드로이드 프레임워크 개선] - PackageManager2"
 description:
 headline:
 modified: 2019-07-04
@@ -17,7 +17,7 @@ featured: true
 # [안드로이드 프레임워크 개선]
 
 
-## PackageManager
+## PackageManager2
 
 
 ---------------------------------------
@@ -32,12 +32,12 @@ featured: true
 
 우리는 넥서스 5를 테스트 및 개선을 위한 디바이스로 선정하였고, 앞으로 해당 디바이스를 통해 개선을 진행한다.  
 
-운영체제 : Android 6.0.1_r77  
+운영체제 및 버전 : Android 6.0.1_r77  
 
 
 ### 빌드 환경 구성  
 
-빌드 환경 구성은 아래의 블로그를 참고했습니다.  
+빌드 환경 구성은 아래의 블로그를 참고했다.   
 https://gamdekong.tistory.com/55?category=763105  
 
 #### repo 설치  
