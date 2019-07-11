@@ -38,9 +38,11 @@ featured: true
 Version : android-6.0.1_r77  
 PackageManagerService.java  
 
+소스 코드 : https://android.googlesource.com/platform/frameworks/base/+/refs/tags/android-6.0.1_r77/services/core/java/com/android/server/pm/PackageManagerService.java  
+
 DEBUG_PACKAGE_SCANNING 플래그는 2개의 메소드안에서 다루어지고 있다.  
 
-#### scanDirLI  
+#### 1. scanDirLI 메소드  
 
 Line : 5625 ~ 5662  
 
@@ -89,29 +91,30 @@ private void scanDirLI(File dir, int parseFlags, int scanFlags, long currentTime
 }
 ```
 
-#### scanPackageDirtyLI  
+#### 2. scanPackageDirtyLI 메소드  
 
 Line : 6482 ~ 7545  
 
 scanPackageDirtyLI는 scanPackageLI에서 부르며, scanPackageLI는 scanDirLI에서 부른다.  
 
-해당 메소드는 package를 스캔하고 paresd package를 return하며, 패키지 업데이트 여부, codePath, partition (system partition에 있는지 아니면 data partition인지), certificate, 버전 체크, 패키지가 유료인 경우, code랑 resource 가 다른 파일에 존재하지 않는 경우 수정.  
+해당 메소드는 인자로 받은 package를 분석하여 다시 return한다.  
+(분석 내용은 패키지 업데이트 여부, codePath, partition(system partition or data partition), certificate, 버전 체크 등등)  
 
 DEBUG_PACKAGE_SCANNING 플래그가 true일 경우에는 다음을 로그로 출력한다.  
-**line 6545 - 스캐닝 중인 app의 name**  
-**line 6572 - PackageSetting 값이 있을 때, Package의 codePath, 세팅값의 codePathString, resourcePathString**  
-**line 6611 - Package의 mSharedUserId가 null이 아닌 경우, Package의 mSharedUserId, 세팅값의 userId, packages**  
-**line 6939 - normal package이며 해당 directory가 존재하지 않을 경우**  
-**line 7259 - Package의 Provider가 존재할때? provider 이름, info name, Syncable한지**  
-**line 7285 - Providers의 info.name**  
-**line 7305 - Services의 info.name**  
-**line 7325 - receivers의 info.name**  
-**line 7345 - activities의 info.name**  
-**line 7379 - permissionGroups의 info.name**   
-**line 7480 - Permissions의 info.name**  
-**line 7508 - Instrumentation의 info.name**   
+*line 6545 - 스캐닝 중인 app의 name*  
+*line 6572 - PackageSetting 값이 있을 때, Package의 codePath, 세팅값의 codePathString, resourcePathString*  
+*line 6611 - Package의 mSharedUserId가 null이 아닌 경우, Package의 mSharedUserId, 세팅값의 userId, packages*  
+*line 6939 - normal package이며 해당 directory가 존재하지 않을 경우*  
+*line 7259 - Package의 Provider가 존재할때? provider 이름, info name, Syncable한지*  
+*line 7285 - Providers의 info.name*  
+*line 7305 - Services의 info.name*  
+*line 7325 - receivers의 info.name*  
+*line 7345 - activities의 info.name*  
+*line 7379 - permissionGroups의 info.name*   
+*line 7480 - Permissions의 info.name*  
+*line 7508 - Instrumentation의 info.name*   
 
-아래 코드는 내용이 많기 때문에, DEBUG_PACKAGE_SCANNING가 포함된 부분만 발췌  
+아래 코드는 내용이 많기 때문에, DEBUG_PACKAGE_SCANNING 플래그가 포함된 부분만 발췌  
 
 ```
 private PackageParser.Package scanPackageDirtyLI(PackageParser.Package pkg, int parseFlags,
@@ -300,4 +303,8 @@ PackageParser의 내용이 많이 나오는데, PackageParser.java를 정밀하�
 
 ### 디바이스 플래싱  
 
+보유하고 있는 기기인 넥서스 5에 플래싱 완료하였다.  
+
 ![PM3_1](/images/post/PM3_1.png "PM3_1")  
+
+다음에는 이전에 사용하려고 했던 갤럭시 A8 (SM-A800S)도 순정 펌웨어를 받아 플래싱 해보려고 한다.  
