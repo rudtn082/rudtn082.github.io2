@@ -42,13 +42,13 @@ DEBUG_PACKAGE_SCANNING 플래그는 2개의 메소드안에서 다루어지고 �
 
 #### scanDirLI  
 
-* Line : 5625 ~ 5662  
+Line : 5625 ~ 5662  
 
-* scanDirLI는 PackageManagerService에서 패키지들을 synchronized 할 때 사용된다.  
+scanDirLI는 PackageManagerService에서 패키지들을 synchronized 할 때 사용된다.  
 
-* 해당 메소드는 directory 내의 package를 확인한 후 package별로 scanPackageLI를 수행하며, 인스톨에 실패한 invalid package를 삭제한다.  
+해당 메소드는 directory 내의 package를 확인한 후 package별로 scanPackageLI를 수행하며, 인스톨에 실패한 invalid package를 삭제한다.  
 
-* DEBUG_PACKAGE_SCANNING 플래그가 true일 경우에는 스캐닝 중인 app의 directory, scanFlags, parseFlags를 로그로 출력한다.  
+DEBUG_PACKAGE_SCANNING 플래그가 true일 경우에는 스캐닝 중인 app의 directory, scanFlags, parseFlags를 로그로 출력한다.  
 
 ```
 private void scanDirLI(File dir, int parseFlags, int scanFlags, long currentTime) {
@@ -91,22 +91,34 @@ private void scanDirLI(File dir, int parseFlags, int scanFlags, long currentTime
 
 #### scanPackageDirtyLI  
 
-* Line : 6482 ~ 7545  
+Line : 6482 ~ 7545  
 
-* scanPackageDirtyLI는 scanPackageLI에서 부르며, scanPackageLI는 scanDirLI에서 부른다.  
+scanPackageDirtyLI는 scanPackageLI에서 부르며, scanPackageLI는 scanDirLI에서 부른다.  
 
-* 해당 메소드는 package를 스캔하고 paresd package를 return하며, 패키지 업데이트 여부, codePath, partition (system partition에 있는지 아니면 data partition인지), certificate, 버전 체크, 패키지가 유료인 경우, code랑 resource 가 다른 파일에 존재하지 않는 경우 수정.  
+해당 메소드는 package를 스캔하고 paresd package를 return하며, 패키지 업데이트 여부, codePath, partition (system partition에 있는지 아니면 data partition인지), certificate, 버전 체크, 패키지가 유료인 경우, code랑 resource 가 다른 파일에 존재하지 않는 경우 수정.  
 
-* DEBUG_PACKAGE_SCANNING 플래그가 true일 경우에는 스캐닝 중인 app의 name, codePath 등을 로그로 출력한다.  
+DEBUG_PACKAGE_SCANNING 플래그가 true일 경우에는 다음을 로그로 출력한다.  
+** line 6545 - 스캐닝 중인 app의 name **  
+** line 6572 - PackageSetting 값이 있을 때, Package의 codePath, 세팅값의 codePathString, resourcePathString **  
+** line 6611 - Package의 mSharedUserId가 null이 아닌 경우, Package의 mSharedUserId, 세팅값의 userId, packages **  
+** line 6939 - normal package이며 해당 directory가 존재하지 않을 경우 **  
+** line 7259 - Package의 Provider가 존재할때? provider 이름, info name, Syncable한지 **  
+** line 7285 - Providers의 info.name **  
+** line 7305 - Services의 info.name **  
+** line 7325 - receivers의 info.name **  
+** line 7345 - activities의 info.name **  
+** line 7379 - permissionGroups의 info.name **   
+** line 7480 - Permissions의 info.name **  
+** line 7508 - Instrumentation의 info.name **   
 
-* 아래 코드는 내용이 많기 때문에, DEBUG_PACKAGE_SCANNING가 포함된 부분만 발췌  
+아래 코드는 내용이 많기 때문에, DEBUG_PACKAGE_SCANNING가 포함된 부분만 발췌  
 
 ```
 private PackageParser.Package scanPackageDirtyLI(PackageParser.Package pkg, int parseFlags,
         int scanFlags, long currentTime, UserHandle user) throws PackageManagerException {
     //  Scanning 로그 출력  //
     if (DEBUG_PACKAGE_SCANNING) {
-      if ((parseFlags & PackageParser.PARSE_CHATTY) != 0)
+      if ((parseFlags & PackageParser.PARSE_CHATTY) != 0) // PackageParser
           Log.d(TAG, "Scanning package " + pkg.packageName);
     }
 
@@ -150,7 +162,7 @@ private PackageParser.Package scanPackageDirtyLI(PackageParser.Package pkg, int 
             }
             //  Scanning 로그 출력  //
             if (DEBUG_PACKAGE_SCANNING) {
-                if ((parseFlags & PackageParser.PARSE_CHATTY) != 0)
+                if ((parseFlags & PackageParser.PARSE_CHATTY) != 0) // PackageParser
                     Log.d(TAG, "Shared UserID " + pkg.mSharedUserId + " (uid=" + suid.userId
                             + "): packages=" + suid.packages);
             }
@@ -180,7 +192,7 @@ private PackageParser.Package scanPackageDirtyLI(PackageParser.Package pkg, int 
         } else {
             //  Scanning 로그 출력  //
             if (DEBUG_PACKAGE_SCANNING) {
-                if ((parseFlags & PackageParser.PARSE_CHATTY) != 0)
+                if ((parseFlags & PackageParser.PARSE_CHATTY) != 0) // PackageParser
                     Log.v(TAG, "Want this data dir: " + dataPath);
             }
             //invoke installer to do the actual installation
@@ -234,7 +246,7 @@ private PackageParser.Package scanPackageDirtyLI(PackageParser.Package pkg, int 
                 }
                 //  Scanning 로그 출력  //
                 if (DEBUG_PACKAGE_SCANNING) {
-                    if ((parseFlags & PackageParser.PARSE_CHATTY) != 0)
+                    if ((parseFlags & PackageParser.PARSE_CHATTY) != 0) // PackageParser
                         Log.d(TAG, "Registered content provider: " + names[j]
                                 + ", className = " + p.info.name + ", isSyncable = "
                                 + p.info.isSyncable);
@@ -251,7 +263,7 @@ private PackageParser.Package scanPackageDirtyLI(PackageParser.Package pkg, int 
         N = pkg.services.size();
         r = null;
         for (i=0; i<N; i++) {
-            PackageParser.Service s = pkg.services.get(i);
+            PackageParser.Service s = pkg.services.get(i); // PackageParser
             s.info.processName = fixProcessName(pkg.applicationInfo.processName,
                     s.info.processName, pkg.applicationInfo.uid);
             mServices.addService(s);
@@ -281,6 +293,10 @@ private PackageParser.Package scanPackageDirtyLI(PackageParser.Package pkg, int 
   }
 }
 ```
+
+전체적인 흐름을 보았는데, 스캐닝에 관련된 내용 중 개선을 한다면 scanPackageDirtyLI 부분을 더 보거나  
+PackageParser의 내용이 많이 나오는데, PackageParser.java를 정밀하게 보는 것이 좋을 것 같다.  
+
 
 ### 디바이스 플래싱  
 
