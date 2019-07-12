@@ -44,11 +44,11 @@ DEBUG_PACKAGE_SCANNING 플래그는 2개의 메소드안에서 다루어지고 �
 
 #### 1. scanDirLI 메소드  
 
-Line : 5625 ~ 5662  
+Line : 5625 ~ 5662   
 
-scanDirLI는 PackageManagerService에서 패키지들을 synchronized 할 때 사용된다.  
+**scanDirLI**는 **PackageManagerService**에서 패키지들을 synchronized 할 때 사용된다.  
 
-해당 메소드는 directory 내의 package를 확인한 후 package별로 scanPackageLI를 수행하며, 인스톨에 실패한 invalid package를 삭제한다.  
+해당 메소드는 directory 내의 package를 확인한 후 package별로 **scanPackageLI**를 수행하며, 인스톨에 실패한 invalid package를 삭제한다.  
 
 DEBUG_PACKAGE_SCANNING 플래그가 true일 경우에는 스캐닝 중인 app의 directory, scanFlags, parseFlags를 로그로 출력한다.  
 
@@ -95,7 +95,7 @@ private void scanDirLI(File dir, int parseFlags, int scanFlags, long currentTime
 
 Line : 6482 ~ 7545  
 
-scanPackageDirtyLI는 scanPackageLI에서 부르며, scanPackageLI는 scanDirLI에서 부른다.  
+**scanPackageDirtyLI**는 **scanPackageLI**에서 부르며, **scanPackageLI**는 **scanDirLI**에서 부른다.  
 
 해당 메소드는 인자로 받은 package를 분석하여 다시 return한다.  
 (분석 내용은 패키지 업데이트 여부, codePath, partition(system partition or data partition), certificate, 버전 체크 등등)  
@@ -297,8 +297,8 @@ private PackageParser.Package scanPackageDirtyLI(PackageParser.Package pkg, int 
 }
 ```
 
-전체적인 흐름을 보았는데, 스캐닝에 관련된 내용 중 개선을 한다면 scanPackageDirtyLI 부분을 더 보거나  
-PackageParser의 내용이 많이 나오는데, PackageParser.java를 정밀하게 보는 것이 좋을 것 같다.  
+전체적인 흐름을 보았는데, 스캐닝에 관련된 내용 중 개선을 한다면 **scanPackageDirtyLI** 부분을 더 보거나  
+PackageParser의 내용이 많이 나오는데, **PackageParser.java**를 정밀하게 보는 것이 좋을 것 같다.  
 
 
 ### 디바이스 플래싱  
