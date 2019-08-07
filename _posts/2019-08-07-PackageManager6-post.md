@@ -41,7 +41,6 @@ long scanStart = SystemClock.uptimeMillis();
 Slog.i(TAG, "Time to scan part 1: "
                   + ((SystemClock.uptimeMillis()-scanStart)/1000f)
                   + " seconds");
-scanStart = SystemClock.uptimeMillis();
 ```
 
 
@@ -56,6 +55,7 @@ scanStart = SystemClock.uptimeMillis();
 ##### 파트4 - 6824 ~ 6961 : 평균 0.0000928초  
 ##### 파트5 - 6963 ~ 7148 : 평균 0.0315초  
 ##### 파트6 - 7153 ~ 7545 : 평균 0.0000714초  
+
 
 라는 결과를 얻었다.  
 로그를 통해서 파트5부분이 가장 오래걸리며, 해결이 시급한 부분으로 보인다.  
