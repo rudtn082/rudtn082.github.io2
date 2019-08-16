@@ -51,9 +51,14 @@ scanPackageDirtyLI에서 부르는 메소드로, 앱의 개수마다 불리게 �
 *ABI란?*  
 *API보다 저수준(바이너리에서 호환) / 두 개의 바이너리 프로그램 모듈 사이의 interface 이다. 보통 한 쪽은 라이브러리 혹은 운영체제이고, 다른 한 쪽은 사용자가 동작시키는 프로그램이다.*  
 
-derivePackageAbi() 메소드는 다음과 같은 시간이 걸리며, 설치된 앱 개수에 따라서 오랜 시간이 걸릴 것으로 예상된다.  
+
+derivePackageAbi() 메소드에서 앱 마다 걸리는 시간을 측정 해 보기위해 다음과 같은 코드를 이용했다.  
 
 ![PM7_1](/images/post/PM7_1.png "PM7_1")  
+
+다음과 같은 시간이 걸렸으며, 설치된 앱 개수에 따라서 오랜 시간이 걸릴 것으로 예상된다.  
+
+![PM7_2](/images/post/PM7_2.png "PM7_2")  
 
 
 ```
@@ -167,9 +172,3 @@ public void derivePackageAbi(PackageParser.Package pkg, File scanFile,
     }
 
 ```
-
-
-
-### mPackageDexOptimizer.performDexOpt()  
-
-Line : 7081 ~ 7083  
