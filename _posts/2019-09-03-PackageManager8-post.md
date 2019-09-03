@@ -50,3 +50,70 @@ strlcpy()는 OpenBSD 프로젝트를 통해 유래된 비표준 C 함수로, 헤
 
 
 ### memcpy()  
+
+```
+#include <string.h>  // C++ 에서는 <cstring>
+
+void* memcpy(void* destination, const void* source, size_t num);
+```
+
+memcpy()는 source가 가리키는 곳 부터 num바이트 만큼을 destination에 복사한다.  
+(이 때, destination과 source의 타입은 모두 위 함수와 무관하다)  
+
+strlcpy()와 다른점은 strncpy()와 같이 널 종료 문자(null terminating character)을 검사하지 않는다. num 바이트 만큼을 복사한다.  
+
+
+### ScopedUtfChars  
+
+com_android_internal_content_NativeLibraryHelper.cpp에서 nativeLibPath가 ScopedUtfChars형을 갖게된다.  
+.c_str()와 .size()가 등장하는데, return값은 다음과 같다.  
+
+const char* utf_chars_
+
+```
+const char* c_str() const {
+  return utf_chars_;
+}
+size_t size() const {
+  return strlen(utf_chars_);
+}
+```
+
+함수 선언에 사용되는 const는 이 함수가 값을 변경하지 않음을 보장한다.  
+
+nativeLibPath.size()는 문자열의 길이를 뜻하는 것.
+
+### memcpy()로 변경  
+
+memcpy로 변경하기 위해서는 if문의 nativeLibPath.c_str() 길이와
+
+기존 코드는 다음과 같다.  
+
+```
+if (strlcpy(localFileName, nativeLibPath.c_str(), sizeof(localFileName)) != nativeLibPath.size()) {
+    ALOGD("Couldn't allocate local file name for library");
+    return INSTALL_FAILED_INTERNAL_ERROR;
+}
+```
+
+nativeLibPath.c_str()의 문자열 길이와 nativeLibPath.size()의 값을 비교하게 된다.  
+
+```
+memcpy(localFileName, nativeLibPath.c_str(), sizeof(localFileName))
+if(strlen(nativeLibPath.c_str()) != nativeLibPath.size()) {
+  ALOGD("Couldn't allocate local file name for library");
+  return INSTALL_FAILED_INTERNAL_ERROR;
+}
+```
+
+로 변경한다면 같은 내용이 될 것같다....  
+
+
+### localFileName 배열 선언  
+
+```
+const size_t fileNameLen = strlen(fileName);
+char localFileName[nativeLibPath.size() + fileNameLen + 2];
+```
+
+????
