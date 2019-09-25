@@ -27,23 +27,57 @@ featured: true
 
 ![PM10_1](/images/post/PM10_1.png "PM10_1")  
 
+100번을 측정하고보니, 개선이 안되어있었다. 이유를 찾아보니, 로그를 잘 못 찍고 있었음.  
 
-로그를 잘 못 썼다.
+100번 측정하는 것은 다음 주에 다시 진행할 예정이다.  
 
-측정결과 x
-
-고치니까 이해가 안가지만 로그를 추가하면 결과값이 달라지는 것 발견 - 해결못함
 
 ### strlcpy 수정  
 
-코드 제대로 수정
+로그 수정하기 위해 코드를 보다가 수정하려던 strlcpy()를 잘못 작성한 것을 확인했다.  
+기존 strlcpy()는 마지막에 널값을 추가해주는데, 우리가 작성한 코드는 널값을 넣어주지 않았었다.  
+
+-수정 전-  
+```
+size_t                 
+strlcpy(char* dst, const char* src, size_t siz)    
+{
+   memcpy(dst, src, siz);
+
+   return strlen(src);
+}
+```
+
+-수정 후-  
+```
+size_t                 
+strlcpy(char* dst, const char* src, size_t siz)    
+{
+   size_t srclen, returnV = strlen(src);
+
+   siz--;
+
+   srclen = returnV;
+
+   if (srclen > siz)
+      srclen = siz;
+
+   memcpy(dst, src, srclen);
+   dst[srclen] = '\0';
+
+   return returnV;
+}
+```
+
+수정한 strlcpy()를 보니까
+
 
 ### 문제점  
 
-말그대로 copy기 때문에 우리가 바꾼 부분이 첫 번째 부팅과 새로 앱을 깔았을 경우에서만 사용되는 것 같음
--> 검증 해야함
+(추측)말그대로 copy기 때문에 우리가 바꾼 부분이 첫 번째 부팅과 새로 앱을 깔았을 경우에서만 사용되는 것 같음  
+-> 검증 해야함, 논문을 쓸 수 있을 지?(매번 켤때마다 개선되는 것이 아니기 때문에)  
 
-이게 맞다면  원래 논문 제목과 목차를 다음과 같이 하려고 했었음
+이게 맞다면 원래 논문 제목과 목차를 다음과 같이 하려고 했었음
 
 그림
 
