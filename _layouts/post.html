@@ -2,10 +2,10 @@
 <html>
 <!--
 ====================================================
-    __  ____  ______________  _______ ___    __
-   / / / /  |/  / ____/   \ \/ / ___//   |  / /
-  / /_/ / /|_/ / /_  / /| |\  /\__ \/ /| | / /
- / __  / /  / / __/ / ___ |/ /___/ / ___ |/ /___
+__  ____  ______________  _______ ___    __
+/ / / /  |/  / ____/   \ \/ / ___//   |  / /
+/ /_/ / /|_/ / /_  / /| |\  /\__ \/ /| | / /
+/ __  / /  / / __/ / ___ |/ /___/ / ___ |/ /___
 /_/ /_/_/  /_/_/   /_/  |_/_//____/_/  |_/_____/
 
 ====================================================
@@ -16,10 +16,10 @@ Description: Awesome dude, awesome life
 ====================================================
 -->
 <head>
-{% include head.html %}
-{% if site.dropcap %}<style type="text/css">@media only screen and (min-width:43.75em){.notepad-post-content div>p:first-child:first-letter{float:left;font-size:4.688rem;line-height:4.375rem;padding-top:.25rem;padding-right:.5rem;padding-left:.188rem;font-family:serif}}</style>{% endif %}
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>
+  {% include head.html %}
+  {% if site.dropcap %}<style type="text/css">@media only screen and (min-width:43.75em){.notepad-post-content div>p:first-child:first-letter{float:left;font-size:4.688rem;line-height:4.375rem;padding-top:.25rem;padding-right:.5rem;padding-left:.188rem;font-family:serif}}</style>{% endif %}
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
   (adsbygoogle = window.adsbygoogle || []).push({
     google_ad_client: "ca-pub-1265374192468982",
     enable_page_level_ads: true
@@ -27,107 +27,109 @@ Description: Awesome dude, awesome life
 </script>
 </head>
 <body class="post-template" itemscope itemtype="https://schema.org/WebPage">
-{% if page.imagefeature %}
-        <main id="notepad-post-container" class="notepad-post-container intro-effect-sliced" role="main">
-            <header class="notepad-post-header">
-                <div class="bg-img"></div>
+  {% if page.imagefeature %}
+  <main id="notepad-post-container" class="notepad-post-container intro-effect-sliced" role="main">
+    <header class="notepad-post-header">
+      <div class="bg-img"></div>
 
-                <div class="notepad-post-menu-header">
-{% else %}
+      <div class="notepad-post-menu-header">
+        {% else %}
         <main id="notepad-post-container-simple" class="notepad-post-container-simple" role="main">
-            <header class="notepad-post-header-simple">
-                <div class="notepad-post-menu-header-simple">
-{% endif %}
-                    <a class="notepad-blog-logo" href="{{ site.url }}">
-                        <img src="{{ site.url }}/images/{{ site.logo }}" alt="Blog Logo" />
-                    </a>
+          <header class="notepad-post-header-simple">
+            <div class="notepad-post-menu-header-simple">
+              {% endif %}
+              <a class="notepad-blog-logo" href="{{ site.url }}">
+                <img src="{{ site.url }}/images/{{ site.logo }}" alt="Blog Logo" />
+              </a>
 
-                <div class="notepad-blog-menu">
-    <div class="notepad-mobile-menu show-for-small">
-        <a href="#"><i class="fa fa-bars"></i></a>
-    </div>
-    <ul class="notepad-menu">
-        <li class="notepad-mobile-close-btn show-for-small text-right">
-            <a href="#"><i class="fa fa-times"></i></a>
-        </li>
-{% for link in site.links %}
-            <li>{% if link.external %}
+              <div class="notepad-blog-menu">
+                <div class="notepad-mobile-menu show-for-small">
+                  <a href="#"><i class="fa fa-bars"></i></a>
+                </div>
+                <ul class="notepad-menu">
+                  <li class="notepad-mobile-close-btn show-for-small text-right">
+                    <a href="#"><i class="fa fa-times"></i></a>
+                  </li>
+                  {% for link in site.links %}
+                  <li>{% if link.external %}
                     <a href="{{ link.url }}">{{ link.title }}</a>
-                {% else %}
+                    {% else %}
                     <a href="{{ site.url }}{{ link.url }}">{{ link.title }}</a>
-                {% endif %} </li>
-{% endfor %}
-    </ul>
+                    {% endif %} </li>
+                    {% endfor %}
+                  </ul>
 
-</div>
-            </div>
-{% if page.imagefeature %}
-            <div class="notepad-post-title bg-check">
+                </div>
+              </div>
+              {% if page.imagefeature %}
+              <div class="notepad-post-title bg-check">
                 <h1>{{ page.title }}</h1>
                 <p>by <strong>{{ site.owner.name }}</strong> &#8212; {% assign tagsize = page.tags.size %}{% if tagsize != 0 %}on {% for tag in page.tags %}<a href="{{ site.url }}/tags/index.html#{{ tag | cgi_encode }}" data-toggle="tooltip" title="Posts tagged with {{ tag }}" rel="tag">{{ tag }}</a>{% unless forloop.last %}&nbsp;&comma;&nbsp;{% endunless %}{% endfor %}{% endif %} <strong><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d %b %Y" }}</time></strong></p>
-            </div>
-            <div class="bg-img"></div>
-        </header>
-        <button class="trigger bg-check" data-info="Read more"><span>Trigger</span></button>
-        <img src="{{ site.url }}/images/{{ page.imagefeature }}" alt="cover-image" />
-{% else %}
-                <div class="notepad-post-title-simple row">
-                    <div class="small-12 columns">
-                        <div class="notepad-post-meta-simple">
-                            <h1>{{ page.title }}</h1>
-                            <p>by <strong>{{ site.owner.name }}</strong> &#8212; {% assign tagsize = page.tags.size %}{% if tagsize != 0 %}on {% for tag in page.tags %}<a href="{{ site.url }}/tags/index.html#{{ tag | cgi_encode }}" data-toggle="tooltip" title="Posts tagged with {{ tag }}" rel="tag">{{ tag }}</a>{% unless forloop.last %}&nbsp;&comma;&nbsp;{% endunless %}{% endfor %}{% endif %} <strong><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d %b %Y" }}</time></strong></p>
-                        </div>
-                    </div>
-                </div>
+              </div>
+              <div class="bg-img"></div>
             </header>
-{% endif %}
-        {% if page.imagefeature %}<article class="notepad-post-content post">{% else %}<article class="notepad-post-content post tag-simple">{% endif %}
+            <button class="trigger bg-check" data-info="Read more"><span>Trigger</span></button>
+            <img src="{{ site.url }}/images/{{ page.imagefeature }}" alt="cover-image" />
+            {% else %}
+            <div class="notepad-post-title-simple row">
+              <div class="small-12 columns">
+                <div class="notepad-post-meta-simple">
+                  <h1>{{ page.title }}</h1>
+                  <p>by <strong>{{ site.owner.name }}</strong> &#8212; {% assign tagsize = page.tags.size %}{% if tagsize != 0 %}on {% for tag in page.tags %}<a href="{{ site.url }}/tags/index.html#{{ tag | cgi_encode }}" data-toggle="tooltip" title="Posts tagged with {{ tag }}" rel="tag">{{ tag }}</a>{% unless forloop.last %}&nbsp;&comma;&nbsp;{% endunless %}{% endfor %}{% endif %} <strong><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d %b %Y" }}</time></strong></p>
+                </div>
+              </div>
+            </div>
+          </header>
+          {% endif %}
+          {% if page.imagefeature %}<article class="notepad-post-content post">{% else %}<article class="notepad-post-content post tag-simple">{% endif %}
             <div>{{ content }}
             </div>
-        </article>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- 수평 디스플레이 -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-1265374192468982"
-             data-ad-slot="7388631121"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-        <div class="cf"></div>
-{% if site.share %}{% include share.html %}{% endif %}
-        <div class="cf"></div>
-
-{% include signoff.html %}
-
-        <div class="cf"></div>
-        {% if site.disqus_shortname and page.comments == true %}
-        <section class="notepad-disqus row">
-    <div class="small-12 columns">
-        <h1 class="notepad-comments-header">Comments</h1>
-          {% if page.comments %}
-          <div id="disqus_thread"></div>
+          </article>
+          <div align="center">
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- 수평 디스플레이 -->
+            <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-1265374192468982"
+            data-ad-slot="7388631121"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
             <script>
-            (function() { // DON'T EDIT BELOW THIS LINE
-            var d = document, s = d.createElement('script');
-            s.src = 'https://https-rudtn082-github-io.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-            })();
+            (adsbygoogle = window.adsbygoogle || []).push({});
             </script>
-            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-          {% endif %}
+          </div>
+          <div class="cf"></div>
+          {% if site.share %}{% include share.html %}{% endif %}
+          <div class="cf"></div>
 
-        </div>
-    </div>
-</section>
-{% endif %}
+          {% include signoff.html %}
+
+          <div class="cf"></div>
+          {% if site.disqus_shortname and page.comments == true %}
+          <section class="notepad-disqus row">
+            <div class="small-12 columns">
+              <h1 class="notepad-comments-header">Comments</h1>
+              {% if page.comments %}
+              <div id="disqus_thread"></div>
+              <script>
+              (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                s.src = 'https://https-rudtn082-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+              })();
+              </script>
+              <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+              {% endif %}
+
+            </div>
+          </div>
+        </section>
+        {% endif %}
         <div class="cf"></div>
 
-    {% include footer.html %}
-</main>
-{% include scripts.html %}
-</body>
-</html>
+        {% include footer.html %}
+      </main>
+      {% include scripts.html %}
+    </body>
+    </html>
