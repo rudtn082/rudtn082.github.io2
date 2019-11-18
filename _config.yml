@@ -1,9 +1,9 @@
-title:            KyungSoo Blog
+title:            Kxxxgs Blog
 description:      "경수 블로그"
 logo:             logo.png
-disqus_shortname: KyungSoo
+disqus_shortname: Kxxxgs
 disqus_url : rudtn082@naver.com
-disqus_id : KyungSoo
+disqus_id : Kxxxgs
 share:            true
 dropcap:			true
 # Change url to your domain. Leave localhost server or blank when working locally.
@@ -18,7 +18,7 @@ baseurl                  : "" # the subpath of your site, e.g. "/blog"
 # Owner/author information
 owner:
   name:           Kxxxgs
-  avatar:         KyungSoo.png
+  avatar:         Kxxxgs.gif
   email:          kyung5587@gmail.com
   # Use the coder's toolbox at http://coderstoolbox.net/string/#!encoding=xml&action=encode&charset=us_ascii to encode your description into XML string
   description:    Kxxxgs 블로그입니다.
@@ -27,8 +27,8 @@ owner:
   facebook:       rudtn082
   github:         rudtn082
   #instagram:      hmfaysal
-  # For Google Authorship https://plus.google.com/authorship
-  #google_plus:    https://plus.google.com/u/0/102602916593522619858
+  # For Google Authorship
+  #google_plus:
 
 # Analytics and webmaster tools stuff goes here
 google_analytics: UA-152834374-1
