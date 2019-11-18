@@ -1,26 +1,21 @@
 ---
 layout: page
 permalink: /about/index.html
-title: KyungSoo Park
-tags: [KyungSoo, Android, Java]
+title: Kxxxgs
+tags: [Android, Java]
 imagefeature: fourseasons.jpg
 chart: true
 ---
 
 <figure>
-  <img src="{{ site.url }}/images/KyungSoo.png" alt="KyungSoo Park">
-  <figcaption>KyungSoo Park</figcaption>
+  <img src="{{ site.url }}/images/Kxxxgs.gif" alt="KyungSoo Park">
+  <figcaption>Kxxxgs</figcaption>
 </figure>
 
-## [INTRODUCTION]()
+## [INTRODUCTION]()  
+Kxxxgs 블로그입니다.
 
-하이하이
-
-## [EXPERIENCE]()
-### 1
-<sub>2</sub>
-- 1234
-
-<h2>Connect</h2>
-✉️ [rudtn082@naver.com]()  
-🌐 [https://github.com/rudtn082](https://github.com/rudtn082)
+## [CONNECT]()  
+✉️ [kyung5587@gmail.com]()  
+📗 [Naver Blog](https://blog.naver.com/rudtn082)  
+🌐 [GitHub](https://github.com/rudtn082)
