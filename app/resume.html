@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script data-ad-client="ca-pub-1265374192468982" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>카카오톡 테마 추천</title>
+    <style>
+        body {
+          background: #fff;
+          color: #000;
+          font-family: 'Nanum Gothic', sans-serif;
+          padding: 70px 20px;
+          max-width: 960px;
+          margin: 0 auto;
+        }
+        .item {
+          margin-bottom: 70px;
+        }
+        .item .tit {
+          display: block;
+          font-size: 2.5rem;
+          font-weight: bold;
+          color: #aaa;
+          text-align: left;
+          margin-bottom: 10px;
+          font-family: 'Noto Sans KR', sans-serif;
+        }
+        .innerItem {
+          vertical-align: top;
+          display: inline-block;
+          text-align: left;
+        }
+        .innerItem .name {
+          display: inline-block;
+          font-size: 2.5rem;
+          font-weight: bold;
+          letter-spacing: 10px;
+          margin-top: 10px; 
+          margin-bottom: 20px;
+        }
+        .innerItem .title {
+          font-size: 1.7rem;
+        }
+        .innerItem .cont {
+          font-size: 1.2rem;
+          margin-bottom: 10px;
+        }
+        .innerItem a {
+          font-size: 1.1rem;
+        }
+        .innerItem i {
+          margin-right: 15px;
+          font-size: 1.5rem;
+          vertical-align: sub;
+        }
+        
+        .innerItem2 {
+          display: flex;
+          text-align: left;
+          margin-left: 5px;
+          border-bottom: 1px solid #eee;
+          margin-bottom: 15px;
+          padding: 10px 0px;
+        }
+        .innerItem2 .date {
+          display: block;
+          font-size: 1.4rem;
+          font-weight: bold;
+          color: #000;
+          margin-bottom: 10px;
+        }
+        .innerItem2 .contDiv {
+          display: inline-block;
+        }
+        .innerItem2 .cont {
+          display: block;
+          font-size: 1.4rem;
+          font-weight: bold;
+          margin-bottom: 10px;
+        }
+        .innerItem2 .contSub {
+          display: block;
+          font-size: 1.2rem;
+          margin-bottom: 10px;
+          color: #5a5a5a;
+        }
+        .innerItem2 .contSubLink {
+          font-size: 1rem;
+          font-style: italic;
+        }
+        .innerItem2 .contUl {
+          display: block;
+          font-size: 1.2rem;
+          margin-bottom: 10px;
+          color: #5a5a5a;
+        }
+        .innerItem2 .contUl li {
+          list-style: square;
+          margin-left: 30px;
+        }
+        .innerItem2 .dateDiv {
+          display: inline-block;
+          width: 35%;
+          float: left;
+        }
+        .innerItem2 .period {
+          display: inline-block;
+          border: 1px solid #171676;
+          background-color: #171676;
+          border-radius: 10px;
+          padding: 3px 6px;
+          color: #fff;
+          margin-bottom: 3px;
+        }
+        .innerItem2 .period2 {
+          display: inline-block;
+          border: 1px solid #ff9c07;
+          background-color: #ff9c07;
+          border-radius: 10px;
+          padding: 3px 6px;
+          color: #fff;
+          margin-bottom: 3px;
+        }
+        .innerItem2 .period3 {
+          display: inline-block;
+          border: 1px solid #aaa;
+          background-color: #aaa;
+          border-radius: 10px;
+          padding: 3px 6px;
+          color: #fff;
+          margin-bottom: 3px;
+        }
+     </style>
+     <script>
+        $(document).ready(function(){
+           var date1 = new Date();
+           var date2 = new Date('2019', '11', '16');
+
+           var diff = Math.abs(date1.getTime() - date2.getTime());
+           diff = Math.floor(Math.ceil(diff / (1000 * 3600 * 24)) / 30);
+
+           var year = Math.floor(diff / 12);
+           var month = diff % 12;
+           
+           $('#kccDate').text(year + '년 ' + month + '개월');
+        });
+     </script>
+</head>
+<body>
+    <div class="item" style="text-align: center;">
+        <img src="./images/img.jpg" style="height: 190px; width: auto; margin: 0 30px;">
+        <div class="innerItem" style="margin: 0 30px;">
+          <p class="name">박경수<span style="font-size: 1rem; letter-spacing: 1px;">(Park KyungSoo)<span></p>
+          <div class="cont">
+              <i class="large material-icons">email</i>
+              <span>rudtn082@naver.com</span>
+          </div>
+          <div class="cont">
+              <i class="large material-icons">call</i>
+              <span>010-3944-3867</span>
+          </div>
+          <div class="cont">
+              <i class="large material-icons">rss_feed</i>
+              <a href="https://rudtn082.github.io/" target="_blank">https://rudtn082.github.io/</a>
+          </div>
+        </div>
+    </div>
+    <div class="item">
+        <span class="tit">EDUCATION</span>
+        <div class="innerItem2">
+          <div class="dateDiv">
+            <span class="date">2018.03 ~ 2020.02</span>
+            <div class="periodDiv">
+              <span class="period3">편입학/졸업</span>
+            </div>
+          </div>
+          <div class="contDiv">
+            <span class="cont">충남대학교</span>
+            <span class="contSub">컴퓨터공학과</span>
+          </div>
+        </div>
+        <div class="innerItem2">
+          <div class="dateDiv">
+            <span class="date">2013.03 ~ 2017.12</span>
+            <div class="periodDiv">
+              <span class="period3">중퇴</span>
+            </div>
+          </div>
+          <div class="contDiv">
+            <span class="cont">순천향대학교</span>
+            <span class="contSub">정보보호학과</span>
+          </div>
+        </div>
+    </div>
+    <div class="item">
+        <span class="tit">CAREER</span>
+        <div class="innerItem2">
+          <div class="dateDiv">
+            <span class="date">2019.12 ~ </span>
+            <div class="periodDiv">
+              <span class="period" id="kccDate"></span>
+              <span class="period2">재직중</span>
+            </div>
+          </div>
+          <div class="contDiv">
+            <span class="cont">케이씨씨 (KCC)</span>
+            <span class="contSub">전산부서 IT구매/인사/연구팀</span>
+            <ul class="contUl">
+              <li>인사시스템(근무시간, 조직, 급여 등) 개발 및 유지보수</li>
+              <li>KCC 그룹사 채용시스템 개발 및 유지보수</li>
+              <li>WebSquare툴 이용 ERP 개발 및 유지보수</li>
+              <li>Full-stack 개발 (Spring, Java, JSP, JavaScript, HTML, CSS, Oracle)</li>
+            </ul>
+          </div>
+        </div>
+    </div>
+    <div class="item">
+        <span class="tit">PROJECT</span>
+        <div class="innerItem2">
+          <div class="dateDiv">
+            <span class="date">2021.06 ~ 2021.10</span>
+            <div class="periodDiv">
+              <span class="period">5개월</span>
+            </div>
+          </div>
+          <div class="contDiv">
+            <span class="cont">그룹사 채용 시스템 재구축</span>
+            <span class="contSub">DB 마이그레이션 및 채용 페이지 개선 목적</span>
+            <ul class="contUl">
+              <li>Ms-sql -> Oracle DB 마이그레이션 진행</li>
+              <li>기존 그룹사 채용 페이지가 따로 없어, 신규 채용 사이트 개발</li>
+              <li>지원자 이메일 인증 회원가입 및 원페이지 지원서 작성 개발</li>
+              <li>관리자 페이지 신설, 지원자 통계 및 현황 페이지 개발</li>
+              <li>면접관 페이지 신설, 이력서 조회 및 평점, 의견 기입 기능 개발</li>
+              <li>전반적인 개발 및 퍼블리싱 담당하여 진행</li>
+            </ul>
+          </div>
+        </div>
+        <div class="innerItem2">
+          <div class="dateDiv">
+            <span class="date">2020.12 ~ 2021.04</span>
+            <div class="periodDiv">
+              <span class="period">5개월</span>
+            </div>
+          </div>
+          <div class="contDiv">
+            <span class="cont">연구원 원료 배합 툴 개발 지원</span>
+            <span class="contSub">배합 Excel 업무를 Web을 통해 작성하여 자산화 목적</span>
+            <ul class="contUl">
+              <li>퀵서치를 통한 제품, 원료, 샘플 등 검색 및 필요 물성 세팅</li>
+              <li>배합의 투입량에 따른 여러 버전에 대해 비교 기능</li>
+              <li>ERP 프로그램과의 연계를 통한 자산화 관리</li>
+              <li>기존 데이터만 옮겨 쓰던 시스템과 비교하여 100배 이상의 등록 건수 증가</li>
+              <li>RealGrid2 제품 이용한 웹 그리드 개발</li>
+            </ul>
+          </div>
+        </div>
+    </div>
+    <div class="item">
+        <span class="tit">EXPERIENCE</span>
+        <div class="innerItem2">
+          <div class="dateDiv">
+            <span class="date">2018.06 ~ 2018.08</span>
+            <div class="periodDiv">
+              <span class="period">2개월</span>
+            </div>
+          </div>
+          <div class="contDiv">
+            <span class="cont">한전원자력연료</span>
+            <span class="contSub">체험형 인턴 정보보안실 사이버보안부</span>
+          </div>
+        </div>
+        <div class="innerItem2">
+          <div class="dateDiv">
+            <span class="date">2017.07 ~ 2017.12</span>
+            <div class="periodDiv">
+              <span class="period">5개월</span>
+            </div>
+          </div>
+          <div class="contDiv">
+            <span class="cont">안랩(AhnLab)</span>
+            <span class="contSub">대학생 기자단 18기 활동</span>
+            <a class="contSubLink" href="https://blogsabo.ahnlab.com/2292" target="_blank">관련 링크</a>
+          </div>
+        </div>
+        <div class="innerItem2">
+          <div class="dateDiv">
+            <span class="date">2017.02 ~ 2017.05</span>
+            <div class="periodDiv">
+              <span class="period">3개월</span>
+            </div>
+          </div>
+          <div class="contDiv">
+            <span class="cont">(주)민앤지</span>
+            <span class="contSub">대학생 서포터즈 아이탤런트 4기 활동</span>
+            <a class="contSubLink" href="https://bit.ly/2lI5GU4" target="_blank">관련 링크</a>
+          </div>
+        </div>
+        <div class="innerItem2">
+          <div class="dateDiv">
+            <span class="date">2016.04 ~ 2016.12</span>
+            <div class="periodDiv">
+              <span class="period">8개월</span>
+            </div>
+          </div>
+          <div class="contDiv">
+            <span class="cont">한국수출입은행</span>
+            <span class="contSub">희망씨앗 대학생 기획 봉사단 4기 활동</span>
+            <a class="contSubLink" href="https://bit.ly/2kanOFE" target="_blank">관련 링크</a>
+          </div>
+        </div>
+    </div>
+    <div class="item">
+        <span class="tit">ETC</span>
+        <div class="innerItem2">
+          <div class="dateDiv">
+            <span class="date">2019.02 ~</span>
+          </div>
+          <div class="contDiv">
+            <span class="cont">구글 플레이스토어 앱 출시 활동</span>
+            <span class="contSub">▶ 당신의 절대가요 (음악 퀴즈 게임) - 누적 다운로드 1만회 이상</span>
+            <span class="contSub">▶ 콜라 DARK (카카오톡 테마) - 누적 다운로드 5만회 이상</span>
+          </div>
+        </div>
+        <div class="innerItem2">
+          <div class="dateDiv">
+            <span class="date">2018.09</span>
+          </div>
+          <div class="contDiv">
+            <span class="cont">선박안전기술공단 사회적 가치 실현 과제 선정을 위한</br> 대국민 아이디어 공모전 최우수상 수상</span>
+            <span class="contSub">스마트 비상탈출경로안내 시스템 제안</span>
+            <a class="contSubLink" href="https://bit.ly/2lFYBmL" target="_blank">관련 링크</a>
+          </div>
+        </div>
+    </div>
+</body>
+</html>
