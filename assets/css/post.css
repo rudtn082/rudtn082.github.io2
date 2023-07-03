@@ -67,7 +67,7 @@ html, body, .notepad-post-container, .notepad-post-header {
         .post-template .notepad-post-header .notepad-post-menu-header .notepad-blog-logo img {
           max-height: 5rem; }
   .post-template .bg-img {
-    position: absolute;
+    position: fixed;
     overflow: hidden;
     top: 0;
     left: 0;
@@ -80,8 +80,7 @@ html, body, .notepad-post-container, .notepad-post-header {
       left: 0;
       display: block;
       min-width: 100%;
-      min-height: 100%;
-      max-width: none; }
+      min-height: 100%;}
   .post-template .notepad-post-title {
     z-index: 1000;
     margin: 0 auto;
